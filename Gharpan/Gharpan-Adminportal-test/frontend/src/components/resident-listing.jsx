@@ -108,7 +108,7 @@ const ResidentsListing = () => {
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
       const response = await fetch(
-        `/api/api/residents?${params.toString()}`,
+        `/api/residents?${params.toString()}`,
         {
           signal: controller.signal,
           headers: {
@@ -148,7 +148,7 @@ const ResidentsListing = () => {
   // Fetch single resident details
   const fetchResidentDetails = async (id) => {
     try {
-      const response = await fetch(`/api/api/residents/${id}`);
+      const response = await fetch(`/api/residents/${id}`);
       const result = await response.json();
 
       if (result.success) {
@@ -167,7 +167,7 @@ const ResidentsListing = () => {
   const deleteResident = async (id) => {
     setDeleteLoading(id);
     try {
-      const response = await fetch(`/api/api/residents/${id}`, {
+      const response = await fetch(`/api/residents/${id}`, {
         method: "DELETE",
       });
       const result = await response.json();
@@ -423,7 +423,7 @@ const ResidentsListing = () => {
       console.log("Changed fields:", Array.from(changedFields));
 
       const response = await fetch(
-        `/api/api/residents/${updateResident._id}`,
+        `/api/residents/${updateResident._id}`,
         {
           method: "PUT",
           headers: {
@@ -560,7 +560,7 @@ const ResidentsListing = () => {
       });
 
       const response = await fetch(
-        `/api/api/residents/export?${params.toString()}`,
+        `/api/residents/export?${params.toString()}`,
         {
           method: "GET",
           headers: {
@@ -622,7 +622,7 @@ const ResidentsListing = () => {
       setError("Generating PDF report... Please wait.");
 
       const response = await fetch(
-        `/api/api/residents/${residentId}/download?format=pdf&template=detailed`
+        `/api/residents/${residentId}/download?format=pdf&template=detailed`
       );
 
       console.log("Download response status:", response.status);
@@ -669,7 +669,7 @@ const ResidentsListing = () => {
       const originalError = error;
       setError("Preparing PDF for printing... Please wait.");
 
-      const printUrl = `/api/api/residents/${residentId}/print?template=detailed`;
+      const printUrl = `/api/residents/${residentId}/print?template=detailed`;
       const printWindow = window.open(
         printUrl,
         "_blank",
@@ -704,7 +704,7 @@ const ResidentsListing = () => {
   ) => {
     try {
       setPreviewResident({ name: residentName, registrationNo });
-      const previewUrl = `/api/api/residents/${residentId}/preview`;
+      const previewUrl = `/api/residents/${residentId}/preview`;
       setPreviewUrl(previewUrl);
       setIsPreviewOpen(true);
     } catch (error) {
@@ -3596,3 +3596,4 @@ const ResidentsListing = () => {
 };
 
 export default ResidentsListing;
+

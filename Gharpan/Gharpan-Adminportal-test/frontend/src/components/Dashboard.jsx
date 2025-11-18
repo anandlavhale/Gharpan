@@ -28,7 +28,7 @@ const Dashboard = () => {
 
       // Fetch total residents
       const residentsResponse = await fetch(
-        "/api/api/residents"
+        "/api/residents"
       );
       const residentsData = await residentsResponse.json();
 
@@ -336,3 +336,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

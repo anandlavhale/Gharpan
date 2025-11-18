@@ -14,7 +14,7 @@ const NotificationSystem = () => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('/api/api/residents/notifications');
+      const response = await fetch('/api/residents/notifications');
       const data = await response.json();
       
       if (data.success) {
@@ -136,3 +136,4 @@ const NotificationSystem = () => {
 };
 
 export default NotificationSystem;
+

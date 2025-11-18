@@ -47,7 +47,7 @@ const CareTracking = () => {
   const fetchResidents = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/api/residents");
+      const response = await fetch("/api/residents");
       if (response.ok) {
         const result = await response.json();
         // Handle the API response structure
@@ -71,7 +71,7 @@ const CareTracking = () => {
 
       console.log("Fetching care events for resident:", residentId);
       const response = await fetch(
-        `/api/api/residents/${residentId}/care-events`
+        `/api/residents/${residentId}/care-events`
       );
       console.log("Care events response status:", response.status);
 
@@ -146,7 +146,7 @@ const CareTracking = () => {
       };
 
       const response = await fetch(
-        `/api/api/residents/${selectedResident._id}/care-events`,
+        `/api/residents/${selectedResident._id}/care-events`,
         {
           method: "POST",
           headers: {
@@ -247,7 +247,7 @@ const CareTracking = () => {
       };
 
       const response = await fetch(
-        `/api/api/residents/${selectedResident._id}/care-events/${selectedEvent._id}`,
+        `/api/residents/${selectedResident._id}/care-events/${selectedEvent._id}`,
         {
           method: "PUT",
           headers: {
@@ -302,7 +302,7 @@ const CareTracking = () => {
       );
 
       const response = await fetch(
-        `/api/api/residents/${selectedResident._id}/care-events/${eventId}`,
+        `/api/residents/${selectedResident._id}/care-events/${eventId}`,
         {
           method: "DELETE",
         }
@@ -1113,3 +1113,4 @@ const CareTracking = () => {
 };
 
 export default CareTracking;
+
