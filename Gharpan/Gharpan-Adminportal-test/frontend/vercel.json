@@ -1,8 +1,16 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
+    { "src": "vite.config.js", "use": "@vercel/static-build" }
+  ],
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "https://gharpan.onrender.com/api/:path*"
+      "src": "/api/(.*)",
+      "dest": "https://gharpan.onrender.com/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
