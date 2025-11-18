@@ -28,7 +28,7 @@ const Dashboard = () => {
 
       // Fetch total residents
       const residentsResponse = await fetch(
-        "http://localhost:5000/api/residents"
+        "/api/api/residents"
       );
       const residentsData = await residentsResponse.json();
 

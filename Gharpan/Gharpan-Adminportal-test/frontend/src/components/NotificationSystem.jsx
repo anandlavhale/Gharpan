@@ -14,7 +14,7 @@ const NotificationSystem = () => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/residents/notifications');
+      const response = await fetch('/api/api/residents/notifications');
       const data = await response.json();
       
       if (data.success) {

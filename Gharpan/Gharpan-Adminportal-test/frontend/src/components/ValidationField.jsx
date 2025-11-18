@@ -61,7 +61,7 @@ const ValidationField = ({
 
     try {
       setIsValidating(true);
-      const response = await fetch('http://localhost:5000/api/residents/validate', {
+      const response = await fetch('/api/api/residents/validate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const ValidationField = ({
 
   const fetchSuggestions = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/residents/autocomplete/${field}?q=${encodeURIComponent(value)}&limit=5`);
+      const response = await fetch(`/api/api/residents/autocomplete/${field}?q=${encodeURIComponent(value)}&limit=5`);
       const data = await response.json();
       
       if (data.success && data.data.suggestions.length > 0) {

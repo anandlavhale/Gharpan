@@ -169,7 +169,7 @@ function RegistrationForm() {
   // Fetch resident data for update with all fields
   const fetchResidentData = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/residents/${id}`);
+      const response = await fetch(`/api/api/residents/${id}`);
       const result = await response.json();
 
       if (result.success && result.data) {
@@ -532,8 +532,8 @@ function RegistrationForm() {
       }
 
       const apiUrl = isUpdateMode 
-        ? `http://localhost:5000/api/residents/${residentId}`
-        : 'http://localhost:5000/api/residents';
+        ? `/api/api/residents/${residentId}`
+        : '/api/api/residents';
       const method = isUpdateMode ? 'PUT' : 'POST';
 
       const response = await fetch(apiUrl, {
@@ -572,7 +572,7 @@ function RegistrationForm() {
             Array.from(documentFormData.entries())
           );
 
-          const docResponse = await fetch('http://localhost:5000/api/documents/upload', {
+          const docResponse = await fetch('/api/api/documents/upload', {
             method: 'POST',
             body: documentFormData
           });
@@ -611,7 +611,7 @@ function RegistrationForm() {
           }
           console.log("Updating resident with documentIds:", documentIds);
           const updateResponse = await fetch(
-            `http://localhost:5000/api/residents/${newResidentId}`,
+            `/api/api/residents/${newResidentId}`,
             {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
