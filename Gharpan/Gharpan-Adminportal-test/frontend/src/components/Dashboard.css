@@ -1,0 +1,118 @@
+/* Dashboard.css */
+
+:root {
+  --brand-color: #0a400c; /* Brand green */
+  --bg-light: #f0fdf4;    /* Soft green for quick cards */
+}
+
+/* --- Dashboard Header --- */
+.dashboard-header {
+  background: var(--brand-color); /* Green background */
+  color: #ffffff; /* White text for contrast */
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+/* --- Dashboard Cards --- */
+.dashboard-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 5px solid var(--brand-color);
+  border-radius: 1rem;
+  background: #ffffff; /* Keep cards white for clarity */
+  animation: slideUp 0.6s ease-in-out forwards;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 64, 12, 0.2);
+}
+
+.dashboard-title {
+  color: var(--brand-color);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.dashboard-count {
+  color: var(--brand-color);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* --- Dashboard Logo --- */
+.dashboard-logo {
+  width: 220px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.dashboard-logo:hover {
+  transform: scale(1.05);
+}
+
+.card-bor {
+  border: none;
+}
+
+/* --- Quick Cards --- */
+.quick-card {
+  background: var(--bg-light);
+  cursor: pointer;
+  border-radius: 1rem;
+  border: none;
+  opacity: 0;
+  animation: popUpFade 0.6s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.quick-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(10, 64, 12, 0.4);
+}
+
+.quick-card .fa {
+  color: var(--brand-color);
+  transition: transform 0.3s;
+}
+
+.quick-card:hover .fa {
+  transform: scale(1.1);
+}
+
+/* --- Animations --- */
+@keyframes popUpFade {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+    box-shadow: none;
+    background-color: #eaf5ea;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 12px 24px rgba(10, 64, 12, 0.3);
+    background-color: var(--bg-light);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

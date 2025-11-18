@@ -1,0 +1,47 @@
+/* Footer Styles */
+.footer {
+  margin-top: auto;
+  min-height: 200px;
+}
+
+.footer .container {
+  padding: 2rem 1rem;
+}
+
+.footer h5 {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer p, .footer a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #fff;
+}
+
+.footer .social-links a {
+  display: inline-block;
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.footer .social-links a:hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+}
+
+.footer hr {
+  border-color: rgba(255, 255, 255, 0.2);
+  margin: 2rem 0 1rem 0;
+}
+
+.footer .copyright {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}

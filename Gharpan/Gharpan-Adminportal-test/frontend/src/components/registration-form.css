@@ -1,0 +1,432 @@
+.jumbotron {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 1300px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Add spacing between form sections */
+.jumbotron + .jumbotron {
+  margin-top: 2.5rem;
+}
+
+.heading{
+  color: #0A400C ;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Improve label appearance */
+.form-label {
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Subtle input focus effect */
+.form-control:focus, .form-select:focus {
+  border-color: #0A400C;
+  box-shadow: 0 0 0 2px rgba(10, 64, 12, 0.08);
+  outline: none;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+/* Fade-slide animation on load */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-container-animate {
+  animation: fadeSlideIn 1s ease-out;
+}
+
+/* Toast animations */
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Field focus animations */
+.form-control, .form-select {
+  transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(10, 64, 12, 0.15);
+}
+
+/* Button hover effects */
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Step indicator animations */
+.step-indicator {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Auto-save indicator pulse */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.auto-save-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Form field error shake animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.field-error {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Smooth height transitions for collapsible content */
+.form-section {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Loading spinner for form submission */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Success checkmark animation */
+@keyframes checkmark {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-checkmark {
+  animation: checkmark 0.5s ease-in-out;
+}
+
+/* Add a little more vertical spacing between fields */
+.row.g-4 > [class^="col-"] {
+  margin-bottom: 1.2rem;
+}
+
+/* ===== RESPONSIVE DESIGN - MOBILE FIRST ===== */
+
+/* Mobile styles (default) */
+.jumbotron {
+  margin: 10px;
+  padding: 15px;
+  max-width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Tablet styles */
+@media (min-width: 576px) {
+  .jumbotron {
+    margin: 15px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 992px) {
+  .jumbotron {
+    margin: 20px auto;
+    padding: 30px;
+    max-width: 1300px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Large desktop styles */
+@media (min-width: 1200px) {
+  .jumbotron {
+    padding: 40px;
+  }
+}
+
+/* Responsive heading */
+.heading {
+  color: #0A400C;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-size: 1.4rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 576px) {
+  .heading {
+    font-size: 1.6rem;
+    letter-spacing: 0.4px;
+    text-align: left;
+  }
+}
+
+@media (min-width: 992px) {
+  .heading {
+    font-size: 1.8rem;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* Responsive form labels */
+.form-label {
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 576px) {
+  .form-label {
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+  }
+}
+
+/* Responsive form controls */
+.form-control, .form-select {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+@media (min-width: 576px) {
+  .form-control, .form-select {
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+}
+
+/* Mobile-optimized focus effects */
+.form-control:focus, .form-select:focus {
+  border-color: #0A400C;
+  box-shadow: 0 0 0 2px rgba(10, 64, 12, 0.1);
+  outline: none;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+@media (min-width: 992px) {
+  .form-control:focus, .form-select:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(10, 64, 12, 0.15);
+  }
+}
+
+/* Responsive buttons */
+.btn {
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 576px) {
+  .btn {
+    width: auto;
+    margin-bottom: 0;
+    font-size: 1rem;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+  }
+}
+
+/* Desktop hover effects */
+@media (min-width: 992px) {
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Mobile touch effects */
+@media (max-width: 991.98px) {
+  .btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Responsive form sections spacing */
+.jumbotron + .jumbotron {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 576px) {
+  .jumbotron + .jumbotron {
+    margin-top: 2rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .jumbotron + .jumbotron {
+    margin-top: 2.5rem;
+  }
+}
+
+/* Responsive grid spacing */
+.row.g-4 > [class^="col-"] {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 576px) {
+  .row.g-4 > [class^="col-"] {
+    margin-bottom: 1.2rem;
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 575.98px) {
+  /* Full width form elements on mobile */
+  .form-control, .form-select, .btn {
+    width: 100% !important;
+  }
+  
+  /* Better text area sizing */
+  .form-control[rows] {
+    min-height: 100px;
+  }
+  
+  /* Larger touch targets */
+  .form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+  }
+  
+  /* Better spacing for checkboxes and radios */
+  .form-check {
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Improved file input styling */
+  .form-control[type="file"] {
+    padding: 0.5rem;
+  }
+}
+
+/* Tablet-specific improvements */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  /* Two-column layout for shorter forms */
+  .form-row-tablet {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .form-row-tablet > div {
+    flex: 1;
+  }
+}
+
+/* Desktop-specific improvements */
+@media (min-width: 992px) {
+  /* Enhanced animations for desktop */
+  .form-container-animate {
+    animation: fadeSlideIn 1.2s ease-out;
+  }
+  
+  /* Better button grouping */
+  .btn-group-desktop {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+  
+  /* Enhanced form section styling */
+  .form-section {
+    padding: 1.5rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    margin-bottom: 2rem;
+  }
+}
+
+/* Large desktop enhancements */
+@media (min-width: 1200px) {
+  .jumbotron {
+    padding: 3rem;
+  }
+  
+  .form-control, .form-select {
+    padding: 0.8rem 1.2rem;
+    font-size: 1.05rem;
+  }
+  
+  .btn {
+    padding: 0.8rem 2.5rem;
+    font-size: 1.05rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .jumbotron {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .btn {
+    display: none;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    transform: none;
+    box-shadow: none;
+  }
+}
+

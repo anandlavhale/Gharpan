@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #FEFAE0;
+  }
+}
+
+@layer components {
+  .card-gharpan {
+    @apply bg-white rounded-lg p-6 border-2 border-[#B1AB86] hover:shadow-lg hover:border-[#819067] transition duration-200;
+  }
+  
+  .btn-primary-gharpan {
+    @apply bg-[#0A400C] text-white px-4 py-2 rounded-lg hover:bg-[#819067] transition-colors duration-200;
+  }
+  
+  .btn-secondary-gharpan {
+    @apply bg-[#B1AB86] text-[#0A400C] px-4 py-2 rounded-lg hover:bg-[#819067] hover:text-white transition-colors duration-200;
+  }
+  
+  .serif-font {
+    font-family: 'Playfair Display', serif;
+  }
+}

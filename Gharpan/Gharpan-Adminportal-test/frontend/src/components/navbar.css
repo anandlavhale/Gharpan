@@ -1,0 +1,69 @@
+/* --- Google Font Import --- */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap");
+
+/* --- CSS Variables for Easy Theming --- */
+:root {
+  --brand-color: #0a400c; /* Brand green */
+  --navbar-height: 60px;  /* Shorter navbar */
+  --font-family: "Poppins", sans-serif;
+}
+
+/* --- Main Navbar Styling --- */
+.navbar {
+  height: var(--navbar-height);
+  background: var(--brand-color); /* Solid green background */
+  border-bottom: none; /* ✅ removed shadow */
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+/* --- Logo Styling --- */
+.logo {
+  height: 40px; /* adjusted to fit shorter navbar */
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Brand Container --- */
+.navbar-brand {
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: translateY(-2px);
+}
+
+/* --- Remove focus outline on logo/brand --- */
+.logo:focus,
+.navbar-brand:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* --- Brand Text Styling --- */
+.brand-text {
+  font-family: var(--font-family);
+  font-size: 1.1rem; /* slightly smaller */
+  font-weight: 600;
+  color: #ffffff !important; /* White text for green navbar */
+  letter-spacing: 0.2px;
+  line-height: var(--navbar-height); /* vertically center */
+}
+
+/* --- Accessibility Focus Ring (for nav links only) --- */
+.nav-link:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
