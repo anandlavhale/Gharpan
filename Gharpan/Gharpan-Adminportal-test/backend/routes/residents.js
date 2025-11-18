@@ -415,6 +415,150 @@ router.put("/:id", photoUpload, async (req, res) => {
   }
 });
 
+// GET /api/residents/export
+router.get("/export", async (req, res) => {
+  try {
+    const {
+      search = "",
+      gender = "",
+      healthStatus = "",
+      category = "",
+      bloodGroup = "",
+      state = "",
+      disabilityStatus = "",
+      ageMin = "",
+      ageMax = "",
+      admissionDateStart = "",
+      admissionDateEnd = "",
+    } = req.query;
+
+    const filter = {};
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { nameGivenByOrganization: { $regex: search, $options: "i" } },
+        { registrationNo: { $regex: search, $options: "i" } },
+        { mobileNo: { $regex: search, $options: "i" } },
+      ];
+    }
+    if (gender) filter.gender = gender;
+    if (healthStatus)
+      filter.healthStatus = { $regex: healthStatus, $options: "i" };
+    if (category) filter.category = { $regex: category, $options: "i" };
+    if (bloodGroup) filter.bloodGroup = bloodGroup;
+    if (disabilityStatus)
+      filter.disabilityStatus = { $regex: disabilityStatus, $options: "i" };
+    if (state) filter["address.state"] = { $regex: state, $options: "i" };
+    if (ageMin || ageMax) {
+      filter.age = {};
+      if (ageMin) filter.age.$gte = parseInt(ageMin);
+      if (ageMax) filter.age.$lte = parseInt(ageMax);
+    }
+    if (admissionDateStart || admissionDateEnd) {
+      filter.admissionDate = {};
+      if (admissionDateStart)
+        filter.admissionDate.$gte = new Date(admissionDateStart);
+      if (admissionDateEnd)
+        filter.admissionDate.$lte = new Date(admissionDateEnd);
+    }
+
+    const residents = await Resident.find(filter)
+      .populate("documentIds")
+      .lean();
+
+    const excelData = residents.map((resident) => ({
+      "Registration No": resident.registrationNo || "N/A",
+      Name: resident.name || "N/A",
+      "Organization Name": resident.nameGivenByOrganization || "N/A",
+      Gender: resident.gender || "N/A",
+      Age: resident.age || "N/A",
+      "Date of Birth": resident.dateOfBirth
+        ? new Date(resident.dateOfBirth).toLocaleDateString("en-IN")
+        : "N/A",
+      Phone: resident.mobileNo || "N/A",
+      Address: resident.address
+        ? `${resident.address.fullAddress || ""}, ${
+            resident.address.district || ""
+          }, ${resident.address.state || ""}, ${
+            resident.address.country || ""
+          }`.replace(/^,\s*|,\s*$/g, "")
+        : "N/A",
+      "Guardian Name": resident.guardianName || "N/A",
+      "Health Status": resident.healthStatus || "N/A",
+      Category: resident.category || "N/A",
+      "Blood Group": resident.bloodGroup || "N/A",
+      "Disability Status": resident.disabilityStatus || "N/A",
+      Ward: resident.ward || "N/A",
+      "Admission Date": resident.admissionDate
+        ? new Date(resident.admissionDate).toLocaleDateString("en-IN")
+        : "N/A",
+      "Voter ID": resident.voterId || "N/A",
+      Aadhaar: resident.aadhaarNumber || "N/A",
+      Religion: resident.religion || "N/A",
+      Weight: resident.weight || "N/A",
+      Height: resident.height || "N/A",
+      Comments: resident.comments || "N/A",
+      Documents: resident.documentIds
+        ? resident.documentIds.map((doc) => doc.name).join(", ")
+        : "N/A",
+    }));
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(excelData);
+
+    ws["!cols"] = [
+      { wch: 15 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 10 },
+      { wch: 8 },
+      { wch: 12 },
+      { wch: 15 },
+      { wch: 40 },
+      { wch: 20 },
+      { wch: 15 },
+      { wch: 12 },
+      { wch: 10 },
+      { wch: 15 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 12 },
+      { wch: 8 },
+      { wch: 8 },
+      { wch: 30 },
+      { wch: 30 },
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, "Residents");
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
+
+    const filename = `residents_export_${new Date()
+      .toISOString()
+      .split("T")[0]}.xlsx`;
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${filename}"`
+    );
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Length", excelBuffer.length);
+
+    res.end(excelBuffer);
+  } catch (error) {
+    console.error("Error exporting to Excel:", error);
+    res.status(500).json({
+      success: false,
+      message: "Export failed",
+      error: error.message,
+    });
+  }
+});
+
 // GET /api/residents/:id - UPDATED to return all fields properly
 router.get("/:id", async (req, res) => {
   console.log("Get resident route hit:", { residentId: req.params.id });
@@ -1068,152 +1212,6 @@ router.get("/search/smart", async (req, res) => {
     });
   }
 });
-
-// GET /api/residents/export
-router.get("/export", async (req, res) => {
-  try {
-    const {
-      search = "",
-      gender = "",
-      healthStatus = "",
-      category = "",
-      bloodGroup = "",
-      state = "",
-      disabilityStatus = "",
-      ageMin = "",
-      ageMax = "",
-      admissionDateStart = "",
-      admissionDateEnd = "",
-    } = req.query;
-
-    const filter = {};
-    if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { nameGivenByOrganization: { $regex: search, $options: "i" } },
-        { registrationNo: { $regex: search, $options: "i" } },
-        { mobileNo: { $regex: search, $options: "i" } },
-      ];
-    }
-    if (gender) filter.gender = gender;
-    if (healthStatus)
-      filter.healthStatus = { $regex: healthStatus, $options: "i" };
-    if (category) filter.category = { $regex: category, $options: "i" };
-    if (bloodGroup) filter.bloodGroup = bloodGroup;
-    if (disabilityStatus)
-      filter.disabilityStatus = { $regex: disabilityStatus, $options: "i" };
-    if (state) filter["address.state"] = { $regex: state, $options: "i" };
-    if (ageMin || ageMax) {
-      filter.age = {};
-      if (ageMin) filter.age.$gte = parseInt(ageMin);
-      if (ageMax) filter.age.$lte = parseInt(ageMax);
-    }
-    if (admissionDateStart || admissionDateEnd) {
-      filter.admissionDate = {};
-      if (admissionDateStart)
-        filter.admissionDate.$gte = new Date(admissionDateStart);
-      if (admissionDateEnd)
-        filter.admissionDate.$lte = new Date(admissionDateEnd);
-    }
-
-    const residents = await Resident.find(filter)
-      .populate("documentIds")
-      .lean();
-
-    const excelData = residents.map((resident) => ({
-      "Registration No": resident.registrationNo || "N/A",
-      Name: resident.name || "N/A",
-      "Organization Name": resident.nameGivenByOrganization || "N/A",
-      Gender: resident.gender || "N/A",
-      Age: resident.age || "N/A",
-      "Date of Birth": resident.dateOfBirth
-        ? new Date(resident.dateOfBirth).toLocaleDateString("en-IN")
-        : "N/A",
-      Phone: resident.mobileNo || "N/A",
-      Address: resident.address
-        ? `${resident.address.fullAddress || ""}, ${
-            resident.address.district || ""
-          }, ${resident.address.state || ""}, ${
-            resident.address.country || ""
-          }`.replace(/^,\s*|,\s*$/g, "")
-        : "N/A",
-      "Guardian Name": resident.guardianName || "N/A",
-      "Health Status": resident.healthStatus || "N/A",
-      Category: resident.category || "N/A",
-      "Blood Group": resident.bloodGroup || "N/A",
-      "Disability Status": resident.disabilityStatus || "N/A",
-      Ward: resident.ward || "N/A",
-      "Admission Date": resident.admissionDate
-        ? new Date(resident.admissionDate).toLocaleDateString("en-IN")
-        : "N/A",
-      "Voter ID": resident.voterId || "N/A",
-      Aadhaar: resident.aadhaarNumber || "N/A",
-      Religion: resident.religion || "N/A",
-      Weight: resident.weight || "N/A",
-      Height: resident.height || "N/A",
-      Comments: resident.comments || "N/A",
-      Documents: resident.documentIds
-        ? resident.documentIds.map((doc) => doc.name).join(", ")
-        : "N/A",
-    }));
-
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(excelData);
-
-    ws["!cols"] = [
-      { wch: 15 },
-      { wch: 20 },
-      { wch: 20 },
-      { wch: 10 },
-      { wch: 8 },
-      { wch: 12 },
-      { wch: 15 },
-      { wch: 40 },
-      { wch: 20 },
-      { wch: 15 },
-      { wch: 12 },
-      { wch: 10 },
-      { wch: 15 },
-      { wch: 12 },
-      { wch: 12 },
-      { wch: 15 },
-      { wch: 15 },
-      { wch: 12 },
-      { wch: 8 },
-      { wch: 8 },
-      { wch: 30 },
-      { wch: 30 },
-    ];
-
-    XLSX.utils.book_append_sheet(wb, ws, "Residents");
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
-
-    const filename = `residents_export_${new Date()
-      .toISOString()
-      .split("T")[0]}.xlsx`;
-
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${filename}"`
-    );
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
-    res.setHeader("Content-Length", excelBuffer.length);
-
-    // ✅ safer for binary
-    res.end(excelBuffer);
-  } catch (error) {
-    console.error("Error exporting to Excel:", error);
-    res.status(500).json({
-      success: false,
-      message: "Export failed",
-      error: error.message,
-    });
-  }
-});
-
 
 // GET /api/residents/stats/enhanced
 router.get("/stats/enhanced", async (req, res) => {
