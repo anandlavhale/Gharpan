@@ -7,35 +7,52 @@ function Login({ onLoginSuccess }) {
     adminId: "",
     password: "",
   });
+  const [error, setError] = useState("");
+
+  const validAdmins = {
+    "Admin1": "Gharpan",
+    "Admin2": "Gharpan",
+    "Admin3": "Gharpan",
+    "Admin4": "Gharpan",
+    "Admin5": "Gharpan"
+  };
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
 
-    // Basic validation
     if (!formData.adminId.trim()) {
-      alert("Please enter your Admin ID!");
+      setError("Please enter your Admin ID!");
       return;
     }
 
     if (!formData.password) {
-      alert("Please enter your password!");
+      setError("Please enter your password!");
+      return;
+    }
+
+    if (!validAdmins[formData.adminId]) {
+      setError("Invalid Admin ID. Access denied.");
+      return;
+    }
+
+    if (validAdmins[formData.adminId] !== formData.password) {
+      setError("Invalid password. Please try again.");
       return;
     }
 
     console.log("Form submitted:", formData);
 
-    // Here you would typically make an API call
-    // For demonstration, we'll simulate a successful login
     setTimeout(() => {
       alert("Login successful!");
-      // Call the success callback to update parent state
       if (onLoginSuccess) {
         onLoginSuccess();
       }
@@ -190,6 +207,12 @@ function Login({ onLoginSuccess }) {
               <p className="text-gray-600">Access your admin dashboard</p>
             </div>
 
+            {error && (
+              <div className="mb-6 p-3 rounded-lg bg-red-100 border border-red-300">
+                <p className="text-red-700 text-sm">{error}</p>
+              </div>
+            )}
+
             {/* Form */}
             <div className="space-y-6">
               <div>
@@ -286,7 +309,7 @@ function Login({ onLoginSuccess }) {
                 Secure admin access to GHARPAN Foundation system
               </p>
               <div className="mt-4 text-xs text-gray-400">
-                <p>Admin ID format: Letters + Numbers (e.g., ADM123, GHP456)</p>
+                <p>Authorized Admin IDs: Admin1 through Admin5</p>
               </div>
             </div>
           </div>
