@@ -2405,12 +2405,30 @@ router.get("/:id/download", async (req, res) => {
         .rect(40, 15, 70, 70)
         .fillAndStroke("#FFFFFF", primaryGreen)
         .lineWidth(3);
-      doc
-        .fontSize(10)
-        .font("Helvetica-Bold")
-        .fillColor(primaryGreen)
-        .text("GHARPAN", 55, 40)
-        .text("LOGO", 60, 55);
+
+      // Try to load the logo image
+      try {
+        // Construct URL to the logo image (assuming frontend runs on port 3000 or 5173)
+        const logoUrl = process.env.FRONTEND_URL
+          ? `${process.env.FRONTEND_URL}/src/images/image1.jpg`
+          : `http://localhost:5173/src/images/image1.jpg`;
+
+        const logoBuffer = await downloadImage(logoUrl);
+        doc.image(logoBuffer, 45, 20, {
+          fit: [60, 60],
+          align: 'center',
+          valign: 'center'
+        });
+      } catch (err) {
+        console.log("Error loading logo:", err);
+        // Fallback to text if logo can't be loaded
+        doc
+          .fontSize(10)
+          .font("Helvetica-Bold")
+          .fillColor(primaryGreen)
+          .text("GHARPAN", 55, 40)
+          .text("LOGO", 60, 55);
+      }
       doc
         .fontSize(24)
         .font("Helvetica-Bold")
@@ -3110,12 +3128,30 @@ router.get("/:id/print", async (req, res) => {
       .rect(40, 15, 70, 70)
       .fillAndStroke("#FFFFFF", primaryGreen)
       .lineWidth(3);
-    doc
-      .fontSize(10)
-      .font("Helvetica-Bold")
-      .fillColor(primaryGreen)
-      .text("GHARPAN", 55, 40)
-      .text("LOGO", 60, 55);
+
+    // Try to load the logo image
+    try {
+      // Construct URL to the logo image (assuming frontend runs on port 3000 or 5173)
+      const logoUrl = process.env.FRONTEND_URL
+        ? `${process.env.FRONTEND_URL}/src/images/image1.jpg`
+        : `http://localhost:5173/src/images/image1.jpg`;
+
+      const logoBuffer = await downloadImage(logoUrl);
+      doc.image(logoBuffer, 45, 20, {
+        fit: [60, 60],
+        align: 'center',
+        valign: 'center'
+      });
+    } catch (err) {
+      console.log("Error loading logo:", err);
+      // Fallback to text if logo can't be loaded
+      doc
+        .fontSize(10)
+        .font("Helvetica-Bold")
+        .fillColor(primaryGreen)
+        .text("GHARPAN", 55, 40)
+        .text("LOGO", 60, 55);
+    }
     doc
       .fontSize(24)
       .font("Helvetica-Bold")
