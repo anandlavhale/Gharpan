@@ -1,27 +1,20 @@
 const admin = require("firebase-admin");
-const path = require("path");
-const fs = require("fs");
+require("dotenv").config();
 
-// Resolve the JSON file path properly (works on local + Render)
-const serviceAccountPath = path.join(__dirname, "firebaseaccount.json");
+const formattedPrivateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
 
-// Safety check: verify JSON file exists
-if (!fs.existsSync(serviceAccountPath)) {
-  console.error("❌ ERROR: firebaseaccount.json not found at:", serviceAccountPath);
-  process.exit(1);
-}
-
-const serviceAccount = require(serviceAccountPath);
-
-// Only bucket comes from env
-if (!process.env.FIREBASE_BUCKET) {
-  console.error("❌ ERROR: FIREBASE_BUCKET is missing in environment variables");
+if (!formattedPrivateKey) {
+  console.error("❌ PRIVATE KEY missing or malformed");
   process.exit(1);
 }
 
 try {
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+      project_id: process.env.FIREBASE_PROJECT_ID,
+      client_email: process.env.FIREBASE_CLIENT_EMAIL,
+      private_key: formattedPrivateKey,
+    }),
     storageBucket: process.env.FIREBASE_BUCKET,
   });
 
@@ -31,6 +24,6 @@ try {
   process.exit(1);
 }
 
-const bucket = admin.storage().bucket();
-
-module.exports = { bucket };
+module.exports = {
+  bucket: admin.storage().bucket(),
+};
