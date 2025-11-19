@@ -2213,8 +2213,11 @@ router.get("/:id/download", async (req, res) => {
       // Helper function to check if we need a new page
       const checkPageBreak = (yPos, requiredSpace = 100) => {
         if (yPos + requiredSpace > doc.page.height - 80) {
-          doc.addPage();
-          return 50;
+          // Only add a new page if we're not at the very beginning of content
+          if (yPos > 100) {
+            doc.addPage();
+            return 50;
+          }
         }
         return yPos;
       };
@@ -2759,10 +2762,55 @@ router.get("/:id/download", async (req, res) => {
         // DOCUMENTS
         yPosition = addSectionHeader("DOCUMENTS", yPosition);
         if (resident.documentIds && resident.documentIds.length > 0) {
-          const docList = resident.documentIds.map((doc, idx) => 
-            `${idx + 1}. ${doc.name || 'Document'} ${doc.type ? `(${doc.type})` : ''}`
+          // First show the document list
+          const docList = resident.documentIds.map((doc, idx) =>
+            `${idx + 1}. ${doc.name || 'Document'} ${doc.type ? `(${doc.type})` : ''} (${doc.mimeType})`
           ).join(", ");
           yPosition = addField("Uploaded Documents", docList, yPosition, true);
+
+          // Then try to embed document content
+          for (const document of resident.documentIds) {
+            yPosition = checkPageBreak(yPosition, 200);
+
+            // Document header
+            doc
+              .rect(40, yPosition, 520, 25)
+              .fillAndStroke("#fef3c7", "#f59e0b")
+              .lineWidth(1);
+            doc
+              .fontSize(10)
+              .font("Helvetica-Bold")
+              .fillColor("#92400e")
+              .text(`${document.name || 'Document'} (${document.type || 'Unknown'})`, 50, yPosition + 8);
+            yPosition += 30;
+
+            try {
+              // Download the document
+              const documentBuffer = await downloadImage(document.filePath);
+
+              if (document.mimeType.startsWith('image/')) {
+                // For images, embed them in the PDF
+                yPosition = checkPageBreak(yPosition, 200);
+                doc.image(documentBuffer, 60, yPosition, {
+                  fit: [480, 180],
+                  align: 'center'
+                });
+                yPosition += 190;
+              } else if (document.mimeType === 'application/pdf') {
+                // For PDFs, add a note that PDF content is attached
+                yPosition = addField("PDF Document", "PDF document available - content embedded separately", yPosition, true);
+                // Note: Merging PDFs would require additional libraries like pdf-lib
+              } else {
+                // For other document types
+                yPosition = addField("Document Content", `Document of type ${document.mimeType} is available but cannot be displayed inline`, yPosition, true);
+              }
+            } catch (err) {
+              console.log(`Error loading document ${document.name}:`, err);
+              yPosition = addField("Document Status", "Document unavailable", yPosition, true);
+            }
+
+            yPosition += 10; // Add some space between documents
+          }
         } else {
           yPosition = addField("Uploaded Documents", "No documents uploaded", yPosition, true);
         }
@@ -2816,34 +2864,39 @@ router.get("/:id/download", async (req, res) => {
           });
         }
 
-        // Add page numbers to all pages
+        // Add page numbers to all pages (only if there are actual pages with content)
         const pages = doc.bufferedPageRange();
-        for (let i = 0; i < pages.count; i++) {
-          doc.switchToPage(i);
-          
-          // Footer
-          const footerY = doc.page.height - 60;
-          doc
-            .rect(0, footerY, doc.page.width, 60)
-            .fillAndStroke(lightGreen, primaryGreen);
-          doc
-            .fontSize(10)
-            .font("Helvetica-Bold")
-            .fillColor(primaryGreen)
-            .text(
-              "Gharpan Organization - Residential Care & Rehabilitation Center",
-              40,
-              footerY + 15,
-              { width: 520, align: 'center' }
-            )
-            .fontSize(8)
-            .font("Helvetica")
-            .text(
-              `Page ${i + 1} of ${pages.count} | Generated: ${new Date().toLocaleDateString("en-IN")} at ${new Date().toLocaleTimeString("en-IN")}`,
-              40,
-              footerY + 35,
-              { width: 520, align: 'center' }
-            );
+        const totalPages = pages.count;
+
+        // Only add footers if there are pages with content
+        if (totalPages > 0) {
+          for (let i = 0; i < totalPages; i++) {
+            doc.switchToPage(i);
+
+            // Footer
+            const footerY = doc.page.height - 60;
+            doc
+              .rect(0, footerY, doc.page.width, 60)
+              .fillAndStroke(lightGreen, primaryGreen);
+            doc
+              .fontSize(10)
+              .font("Helvetica-Bold")
+              .fillColor(primaryGreen)
+              .text(
+                "Gharpan Organization - Residential Care & Rehabilitation Center",
+                40,
+                footerY + 15,
+                { width: 520, align: 'center' }
+              )
+              .fontSize(8)
+              .font("Helvetica")
+              .text(
+                `Page ${i + 1} of ${totalPages} | Generated: ${new Date().toLocaleDateString("en-IN")} at ${new Date().toLocaleTimeString("en-IN")}`,
+                40,
+                footerY + 35,
+                { width: 520, align: 'center' }
+              );
+          }
         }
 
         doc.end();
