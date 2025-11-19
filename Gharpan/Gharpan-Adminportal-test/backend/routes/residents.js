@@ -7,6 +7,7 @@ const { bucket } = require("../firebaseConfig"); // Firebase Storage bucket
 const multer = require("multer");
 const XLSX = require("xlsx");
 const PDFDocument = require("pdfkit");
+const https = require("https");
 
 // Configure multer for memory storage (for Firebase uploads)
 const upload = multer({
@@ -2323,10 +2324,27 @@ router.get("/:id/download", async (req, res) => {
         return yPos + 40;
       };
 
-      // Fixed photo function - using URL loading
+      // Helper function to download image from URL and convert to buffer
+      const downloadImage = (url) => {
+        return new Promise((resolve, reject) => {
+          https.get(url, (response) => {
+            if (response.statusCode !== 200) {
+              reject(new Error(`Failed to download image: ${response.statusCode}`));
+              return;
+            }
+
+            const chunks = [];
+            response.on('data', (chunk) => chunks.push(chunk));
+            response.on('end', () => resolve(Buffer.concat(chunks)));
+            response.on('error', reject);
+          }).on('error', reject);
+        });
+      };
+
+      // Fixed photo function - download images and convert to base64
       const addPhotos = async (yPos) => {
         yPos = checkPageBreak(yPos, 200);
-        
+
         const photoWidth = 140;
         const photoHeight = 180;
         const xPosLeft = 80;
@@ -2336,8 +2354,8 @@ router.get("/:id/download", async (req, res) => {
         doc.rect(xPosLeft, yPos, photoWidth, photoHeight).stroke("#d1d5db");
         if (resident.photoBeforeAdmission) {
           try {
-            // For URLs, PDFKit can handle them directly
-            doc.image(resident.photoBeforeAdmission, xPosLeft + 5, yPos + 5, {
+            const imageBuffer = await downloadImage(resident.photoBeforeAdmission);
+            doc.image(imageBuffer, xPosLeft + 5, yPos + 5, {
               fit: [photoWidth - 10, photoHeight - 10],
               align: 'center',
               valign: 'center'
@@ -2355,7 +2373,8 @@ router.get("/:id/download", async (req, res) => {
         doc.rect(xPosRight, yPos, photoWidth, photoHeight).stroke("#d1d5db");
         if (resident.photoAfterAdmission) {
           try {
-            doc.image(resident.photoAfterAdmission, xPosRight + 5, yPos + 5, {
+            const imageBuffer = await downloadImage(resident.photoAfterAdmission);
+            doc.image(imageBuffer, xPosRight + 5, yPos + 5, {
               fit: [photoWidth - 10, photoHeight - 10],
               align: 'center',
               valign: 'center'
