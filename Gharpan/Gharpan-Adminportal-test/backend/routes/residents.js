@@ -8,6 +8,8 @@ const multer = require("multer");
 const XLSX = require("xlsx");
 const PDFDocument = require("pdfkit");
 const https = require("https");
+const fs = require("fs");
+const path = require("path");
 
 // Configure multer for memory storage (for Firebase uploads)
 const upload = multer({
@@ -2408,12 +2410,9 @@ router.get("/:id/download", async (req, res) => {
 
       // Try to load the logo image
       try {
-        // Construct URL to the logo image (assuming frontend runs on port 3000 or 5173)
-        const logoUrl = process.env.FRONTEND_URL
-          ? `${process.env.FRONTEND_URL}/src/images/image1.jpg`
-          : `http://localhost:5173/src/images/image1.jpg`;
-
-        const logoBuffer = await downloadImage(logoUrl);
+        // Read logo image from frontend directory
+        const logoPath = path.join(__dirname, '../frontend/src/images/image1.jpg');
+        const logoBuffer = fs.readFileSync(logoPath);
         doc.image(logoBuffer, 45, 20, {
           fit: [60, 60],
           align: 'center',
@@ -3131,12 +3130,9 @@ router.get("/:id/print", async (req, res) => {
 
     // Try to load the logo image
     try {
-      // Construct URL to the logo image (assuming frontend runs on port 3000 or 5173)
-      const logoUrl = process.env.FRONTEND_URL
-        ? `${process.env.FRONTEND_URL}/src/images/image1.jpg`
-        : `http://localhost:5173/src/images/image1.jpg`;
-
-      const logoBuffer = await downloadImage(logoUrl);
+      // Read logo image from frontend directory
+      const logoPath = path.join(__dirname, '../frontend/src/images/image1.jpg');
+      const logoBuffer = fs.readFileSync(logoPath);
       doc.image(logoBuffer, 45, 20, {
         fit: [60, 60],
         align: 'center',
