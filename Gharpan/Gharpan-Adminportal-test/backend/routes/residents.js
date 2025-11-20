@@ -2410,8 +2410,30 @@ router.get("/:id/download", async (req, res) => {
 
       // Try to load the logo image
       try {
-        // Read logo image from frontend directory
-        const logoPath = path.join(__dirname, '../frontend/src/images/image1.jpg');
+        let logoPath;
+
+        // Try multiple possible paths for different environments
+        const possiblePaths = [
+          path.join(__dirname, 'public/image1.jpg'), // Logo in backend public directory
+          path.join(__dirname, '../frontend/src/images/image1.jpg'), // Local development
+          path.join(__dirname, '../../frontend/src/images/image1.jpg'), // Some deployment structures
+          path.join(__dirname, 'logo.jpg'), // Logo in backend directory
+          path.join(process.cwd(), 'frontend/src/images/image1.jpg'), // From project root
+          path.join(process.cwd(), 'logo.jpg'), // Logo in project root
+        ];
+
+        // Find the first existing path
+        for (const testPath of possiblePaths) {
+          if (fs.existsSync(testPath)) {
+            logoPath = testPath;
+            break;
+          }
+        }
+
+        if (!logoPath) {
+          throw new Error('Logo file not found in any expected location');
+        }
+
         const logoBuffer = fs.readFileSync(logoPath);
         doc.image(logoBuffer, 45, 20, {
           fit: [60, 60],
@@ -2419,7 +2441,7 @@ router.get("/:id/download", async (req, res) => {
           valign: 'center'
         });
       } catch (err) {
-        console.log("Error loading logo:", err);
+        console.log("Error loading logo:", err.message);
         // Fallback to text if logo can't be loaded
         doc
           .fontSize(10)
@@ -3130,8 +3152,30 @@ router.get("/:id/print", async (req, res) => {
 
     // Try to load the logo image
     try {
-      // Read logo image from frontend directory
-      const logoPath = path.join(__dirname, '../frontend/src/images/image1.jpg');
+      let logoPath;
+
+      // Try multiple possible paths for different environments
+      const possiblePaths = [
+        path.join(__dirname, 'public/image1.jpg'), // Logo in backend public directory
+        path.join(__dirname, '../frontend/src/images/image1.jpg'), // Local development
+        path.join(__dirname, '../../frontend/src/images/image1.jpg'), // Some deployment structures
+        path.join(__dirname, 'logo.jpg'), // Logo in backend directory
+        path.join(process.cwd(), 'frontend/src/images/image1.jpg'), // From project root
+        path.join(process.cwd(), 'logo.jpg'), // Logo in project root
+      ];
+
+      // Find the first existing path
+      for (const testPath of possiblePaths) {
+        if (fs.existsSync(testPath)) {
+          logoPath = testPath;
+          break;
+        }
+      }
+
+      if (!logoPath) {
+        throw new Error('Logo file not found in any expected location');
+      }
+
       const logoBuffer = fs.readFileSync(logoPath);
       doc.image(logoBuffer, 45, 20, {
         fit: [60, 60],
@@ -3139,7 +3183,7 @@ router.get("/:id/print", async (req, res) => {
         valign: 'center'
       });
     } catch (err) {
-      console.log("Error loading logo:", err);
+      console.log("Error loading logo:", err.message);
       // Fallback to text if logo can't be loaded
       doc
         .fontSize(10)
