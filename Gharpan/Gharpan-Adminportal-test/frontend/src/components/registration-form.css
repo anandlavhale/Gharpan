@@ -190,7 +190,7 @@
 /* Large desktop styles */
 @media (min-width: 1200px) {
   .jumbotron {
-    padding: 40px;
+    padding: 35px;
   }
 }
 
@@ -199,14 +199,14 @@
   color: #0A400C;
   font-weight: 700;
   letter-spacing: 0.3px;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   text-align: center;
   margin-bottom: 1rem;
 }
 
 @media (min-width: 576px) {
   .heading {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     letter-spacing: 0.4px;
     text-align: left;
   }
@@ -214,7 +214,7 @@
 
 @media (min-width: 992px) {
   .heading {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
     letter-spacing: 0.5px;
   }
 }
@@ -223,11 +223,18 @@
 .form-label {
   font-weight: 600;
   letter-spacing: 0.1px;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   margin-bottom: 0.5rem;
 }
 
 @media (min-width: 576px) {
+  .form-label {
+    font-size: 0.9rem;
+    letter-spacing: 0.15px;
+  }
+}
+
+@media (min-width: 992px) {
   .form-label {
     font-size: 0.95rem;
     letter-spacing: 0.2px;
@@ -236,16 +243,24 @@
 
 /* Responsive form controls */
 .form-control, .form-select {
-  padding: 0.6rem 0.8rem;
-  font-size: 0.9rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
   border-radius: 6px;
   transition: all 0.2s ease-in-out;
 }
 
 @media (min-width: 576px) {
   .form-control, .form-select {
-    padding: 0.7rem 1rem;
-    font-size: 1rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.9rem;
+    border-radius: 7px;
+  }
+}
+
+@media (min-width: 992px) {
+  .form-control, .form-select {
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
     border-radius: 8px;
   }
 }
@@ -265,23 +280,72 @@
   }
 }
 
-/* Responsive buttons */
+/* Responsive buttons - Reduced sizes */
 .btn {
-  padding: 0.7rem 1.5rem;
-  font-size: 0.9rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
   border-radius: 6px;
   transition: all 0.2s ease-in-out;
   width: 100%;
   margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 @media (min-width: 576px) {
   .btn {
     width: auto;
     margin-bottom: 0;
-    font-size: 1rem;
-    padding: 0.75rem 2rem;
+    font-size: 0.875rem;
+    padding: 0.55rem 1.5rem;
+    border-radius: 7px;
+  }
+}
+
+@media (min-width: 992px) {
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.75rem;
     border-radius: 8px;
+  }
+}
+
+/* Small action buttons (for icons, delete, etc.) */
+.btn-sm, .btn.btn-sm {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+@media (min-width: 576px) {
+  .btn-sm, .btn.btn-sm {
+    padding: 0.4rem 1rem;
+    font-size: 0.825rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .btn-sm, .btn.btn-sm {
+    padding: 0.45rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Large primary buttons (submit, save, etc.) */
+.btn-lg, .btn.btn-lg {
+  padding: 0.65rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+@media (min-width: 576px) {
+  .btn-lg, .btn.btn-lg {
+    padding: 0.7rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .btn-lg, .btn.btn-lg {
+    padding: 0.75rem 2.25rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -320,10 +384,16 @@
 
 /* Responsive grid spacing */
 .row.g-4 > [class^="col-"] {
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
 }
 
 @media (min-width: 576px) {
+  .row.g-4 > [class^="col-"] {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 992px) {
   .row.g-4 > [class^="col-"] {
     margin-bottom: 1.2rem;
   }
@@ -338,23 +408,35 @@
   
   /* Better text area sizing */
   .form-control[rows] {
-    min-height: 100px;
+    min-height: 90px;
   }
   
   /* Larger touch targets */
   .form-check-input {
-    width: 1.2em;
-    height: 1.2em;
+    width: 1.15em;
+    height: 1.15em;
   }
   
   /* Better spacing for checkboxes and radios */
   .form-check {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.7rem;
   }
   
   /* Improved file input styling */
   .form-control[type="file"] {
-    padding: 0.5rem;
+    padding: 0.45rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Compact button groups */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .btn-group .btn {
+    margin: 0;
   }
 }
 
@@ -368,6 +450,12 @@
   
   .form-row-tablet > div {
     flex: 1;
+  }
+  
+  /* Optimized button groups */
+  .btn-group {
+    display: flex;
+    gap: 0.75rem;
   }
 }
 
@@ -392,22 +480,41 @@
     background: rgba(255, 255, 255, 0.5);
     margin-bottom: 2rem;
   }
+  
+  /* Horizontal button groups */
+  .btn-group {
+    display: inline-flex;
+    gap: 0.75rem;
+  }
 }
 
 /* Large desktop enhancements */
 @media (min-width: 1200px) {
   .jumbotron {
-    padding: 3rem;
+    padding: 2.5rem;
   }
   
   .form-control, .form-select {
-    padding: 0.8rem 1.2rem;
-    font-size: 1.05rem;
+    padding: 0.7rem 1.1rem;
+    font-size: 1rem;
   }
   
   .btn {
+    padding: 0.65rem 2rem;
+    font-size: 0.95rem;
+  }
+  
+  .btn-lg {
     padding: 0.8rem 2.5rem;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Extra large screens */
+@media (min-width: 1400px) {
+  .jumbotron {
+    padding: 3rem;
+    max-width: 1400px;
   }
 }
 
@@ -428,5 +535,38 @@
     transform: none;
     box-shadow: none;
   }
+  
+  /* Hide unnecessary elements */
+  .btn-group {
+    display: none;
+  }
 }
 
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .form-control, .form-select {
+    border-width: 2px;
+  }
+  
+  .btn {
+    border-width: 2px;
+    font-weight: 600;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    transform: none;
+  }
+  
+  .btn:hover {
+    transform: none;
+  }
+}
