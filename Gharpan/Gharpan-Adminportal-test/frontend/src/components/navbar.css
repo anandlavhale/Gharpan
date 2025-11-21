@@ -67,3 +67,27 @@
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+/* --- Logout Button --- */
+.logout-btn {
+  background: #ffffff;
+  color: var(--brand-color);
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-family: var(--font-family);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.logout-btn:hover {
+  background: #e6e6e6;
+  transform: translateY(-2px);
+}
+
+.logout-btn:active {
+  transform: translateY(0px);
+  box-shadow: none;
+}

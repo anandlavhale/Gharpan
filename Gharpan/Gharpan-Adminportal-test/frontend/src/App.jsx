@@ -16,10 +16,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Login from './components/Login';
-import ResidentListing from './components/resident-listing'; // ✅ Imported your listing component
+import ResidentListing from './components/resident-listing';
 import CareTracking from './components/Caretracking';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+// 🔥 Import ProtectedRoute
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 // Wrapper to use useNavigate in a functional component
 function LoginWithRedirect() {
@@ -30,21 +32,57 @@ function LoginWithRedirect() {
   return <Login onLoginSuccess={handleLoginSuccess} />;
 }
 
-// Layout wrapper to conditionally show Navbar and Footer
+// Layout wrapper to hide Navbar/Footer on login page
 function AppLayout() {
   const location = useLocation();
-  const hideLayout = location.pathname === '/'; // Hide on login page
+  const hideLayout = location.pathname === '/';
 
   return (
     <>
       {!hideLayout && <Navbar />}
+
       <Routes>
+        {/* Login Page */}
         <Route path="/" element={<LoginWithRedirect />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/register" element={<RegistrationForm />} />
-        <Route path="/listings" element={<ResidentListing />} /> {/* ✅ Added this */}
-        <Route path="/care-tracking" element={<CareTracking />} />
+
+        {/* 🔐 Protected Pages */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/register"
+          element={
+            <ProtectedRoute>
+              <RegistrationForm />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/listings"
+          element={
+            <ProtectedRoute>
+              <ResidentListing />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/care-tracking"
+          element={
+            <ProtectedRoute>
+              <CareTracking />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+
       {!hideLayout && <Footer />}
     </>
   );
@@ -59,4 +97,3 @@ function App() {
 }
 
 export default App;
-

@@ -9,11 +9,11 @@ lerna-debug.log*
 # dotenv environment variables
 .env
 
-/backend/firebase-key.json
+/backend/firebaseaccountjson.json
 
 # Firebase credentials
-firebase-key.json
-backend/firebase-key.json
+firebaseaccountjson.json
+backend/firebaseaccountjson.json
 
 # Optional OS/system files
 .DS_Store

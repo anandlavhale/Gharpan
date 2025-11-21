@@ -10,11 +10,11 @@ function Login({ onLoginSuccess }) {
   const [error, setError] = useState("");
 
   const validAdmins = {
-    "Admin1": "Gharpan",
-    "Admin2": "Gharpan",
-    "Admin3": "Gharpan",
-    "Admin4": "Gharpan",
-    "Admin5": "Gharpan"
+    Admin1: "Gharpan",
+    Admin2: "Gharpan",
+    Admin3: "Gharpan",
+    Admin4: "Gharpan",
+    Admin5: "Gharpan",
   };
 
   const handleInputChange = (e) => {
@@ -51,12 +51,13 @@ function Login({ onLoginSuccess }) {
 
     console.log("Form submitted:", formData);
 
+    // Save login token only once
+    localStorage.setItem("token", "true");
+
     setTimeout(() => {
       alert("Login successful!");
-      if (onLoginSuccess) {
-        onLoginSuccess();
-      }
-    }, 500);
+      onLoginSuccess && onLoginSuccess();
+    }, 300);
   };
 
   return (
@@ -111,13 +112,6 @@ function Login({ onLoginSuccess }) {
                   alt="GHARPAN Logo"
                   className="w-20 h-20 object-contain"
                 />
-                <div className="relative hidden">
-                  <Heart
-                    className="w-12 h-12 absolute -top-1 -left-1"
-                    style={{ color: "#0A400C" }}
-                  />
-                  <Leaf className="w-12 h-12" style={{ color: "#0A400C" }} />
-                </div>
               </div>
               <h1
                 className="text-4xl font-bold mb-2"
@@ -148,7 +142,7 @@ function Login({ onLoginSuccess }) {
 
             <div
               className="mt-8 p-4 rounded-lg shadow-md"
-              style={{ backgroundColor: "rgba(255, 255, 255, 0.6)" }} // 60% opaque
+              style={{ backgroundColor: "rgba(255, 255, 255, 0.6)" }}
             >
               <p className="text-sm text-green-900 text-center">
                 "Together, we can create lasting change and build sustainable
@@ -171,6 +165,7 @@ function Login({ onLoginSuccess }) {
         {/* Right Side - Form */}
         <div className="w-full lg:w-1/2 p-8 lg:p-12">
           <div className="max-w-md mx-auto">
+
             {/* Mobile Logo */}
             <div className="lg:hidden text-center mb-8">
               <div
@@ -182,13 +177,6 @@ function Login({ onLoginSuccess }) {
                   alt="GHARPAN Logo"
                   className="w-12 h-12 object-contain"
                 />
-                <div className="relative hidden">
-                  <Heart
-                    className="w-8 h-8 absolute -top-0.5 -left-0.5"
-                    style={{ color: "#0A400C" }}
-                  />
-                  <Leaf className="w-8 h-8" style={{ color: "#0A400C" }} />
-                </div>
               </div>
               <h2 className="text-2xl font-bold" style={{ color: "#0A400C" }}>
                 GHARPAN
@@ -204,7 +192,9 @@ function Login({ onLoginSuccess }) {
               >
                 Welcome Back
               </h2>
-              <p className="text-gray-600">Access your admin dashboard</p>
+              <p className="text-gray-600">
+                Access your admin dashboard
+              </p>
             </div>
 
             {error && (
@@ -215,6 +205,7 @@ function Login({ onLoginSuccess }) {
 
             {/* Form */}
             <div className="space-y-6">
+              {/* Admin ID */}
               <div>
                 <label
                   className="block text-sm font-medium mb-2"
@@ -234,21 +225,12 @@ function Login({ onLoginSuccess }) {
                       backgroundColor: "#FEFCF2",
                       borderColor: "#d1d5db",
                     }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = "#0A400C";
-                      e.target.style.boxShadow =
-                        "0 0 0 2px rgba(10, 64, 12, 0.1)";
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = "#d1d5db";
-                      e.target.style.boxShadow = "none";
-                    }}
-                    placeholder="Enter your Admin ID (e.g., ADM123, GHP456)"
-                    required
+                    placeholder="Enter your Admin ID"
                   />
                 </div>
               </div>
 
+              {/* Password */}
               <div>
                 <label
                   className="block text-sm font-medium mb-2"
@@ -268,17 +250,7 @@ function Login({ onLoginSuccess }) {
                       backgroundColor: "#FEFCF2",
                       borderColor: "#d1d5db",
                     }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = "#0A400C";
-                      e.target.style.boxShadow =
-                        "0 0 0 2px rgba(10, 64, 12, 0.1)";
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = "#d1d5db";
-                      e.target.style.boxShadow = "none";
-                    }}
                     placeholder="Enter your password"
-                    required
                   />
                   <button
                     type="button"
@@ -294,6 +266,7 @@ function Login({ onLoginSuccess }) {
                 </div>
               </div>
 
+              {/* Login Button */}
               <button
                 type="button"
                 onClick={handleSubmit}
@@ -303,7 +276,7 @@ function Login({ onLoginSuccess }) {
               </button>
             </div>
 
-            {/* Additional Info */}
+            {/* Footer Info */}
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-500">
                 Secure admin access to GHARPAN Foundation system
@@ -320,4 +293,3 @@ function Login({ onLoginSuccess }) {
 }
 
 export default Login;
-
