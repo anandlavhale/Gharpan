@@ -5,7 +5,11 @@ const mongoose = require('mongoose');
 const Document = require('../models/Document');
 const Resident = require('../models/Resident');
 const { bucket } = require('../firebaseConfig');
+const { authenticateToken } = require('../middleware/auth');
 const multer = require('multer');
+
+// Apply authentication to all routes
+router.use(authenticateToken);
 
 // Configure multer
 const upload = multer({

@@ -4,7 +4,11 @@ const mongoose = require("mongoose");
 const Resident = require("../models/Resident");
 const Document = require("../models/Document");
 const { bucket } = require("../firebaseConfig"); // Firebase Storage bucket
+const { authenticateToken, requireSuperAdmin } = require("../middleware/auth");
 const multer = require("multer");
+
+// Apply authentication to all routes
+router.use(authenticateToken);
 const XLSX = require("xlsx");
 const PDFDocument = require("pdfkit");
 const https = require("https");
@@ -1853,7 +1857,7 @@ router.put("/:id", upload.single("photoUpload"), async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateToken, requireSuperAdmin, async (req, res) => {
   console.log("Delete resident route hit:", { residentId: req.params.id });
 
   try {
@@ -3640,7 +3644,7 @@ router.put("/:id/care-events/:eventId", async (req, res) => {
 });
 
 // DELETE: Remove a specific care event
-router.delete("/:id/care-events/:eventId", async (req, res) => {
+router.delete("/:id/care-events/:eventId", authenticateToken, requireSuperAdmin, async (req, res) => {
   try {
     const { id, eventId } = req.params;
 
