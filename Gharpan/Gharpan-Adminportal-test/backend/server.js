@@ -104,9 +104,7 @@ mongoose
 
 const residentRoutes = require("./routes/residents");
 const documentRoutes = require("./routes/documents");
-const authRoutes = require("./routes/auth");
 
-app.use("/api/auth", authRoutes);
 app.use("/api/residents", residentRoutes);
 app.use("/api/documents", documentRoutes);
 
