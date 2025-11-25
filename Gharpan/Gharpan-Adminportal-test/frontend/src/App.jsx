@@ -23,6 +23,9 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 // 🔥 Import ProtectedRoute
 import ProtectedRoute from "./utils/ProtectedRoute";
 
+// 🔥 Add ScrollToTop import
+import ScrollToTop from "./ScrollToTop";
+
 // Wrapper to use useNavigate in a functional component
 function LoginWithRedirect() {
   const navigate = useNavigate();
@@ -91,6 +94,10 @@ function AppLayout() {
 function App() {
   return (
     <Router>
+
+      {/* 🔥 put here */}
+      <ScrollToTop />
+
       <AppLayout />
     </Router>
   );
